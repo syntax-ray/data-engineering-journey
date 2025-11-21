@@ -1,0 +1,4 @@
+playground.*
+venv/
+*.csv
+*.json
