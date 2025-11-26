@@ -10,3 +10,6 @@
 - [x] Install PostgreSQL locally - sudo -E docker compose up -d
 - [x] Create a small sample database (3 tables).
 - [x] Write 5 SQL queries (joins + aggregates) - sql_exercises > exercise_1
+
+# Day two (Build a mini python ETL script)
+- [] Complete python mini project 1 
