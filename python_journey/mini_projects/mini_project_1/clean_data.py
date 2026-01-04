@@ -27,7 +27,7 @@ def check_missing_values(df: pd.DataFrame):
 
 def handle_missing_values(df: pd.DataFrame):
     # fill company column values with n/a because the columns missing values cover ~= 94% of the data. Agent covers 14%
-    fill_values = values = {"company": -99, "agent": -99}
+    fill_values = {"company": -99, "agent": -99}
     df = df.fillna(value=fill_values)
     df = df.dropna()
     return df
@@ -272,11 +272,15 @@ def handle_business_logic_issues(df: pd.DataFrame):
     df.loc[df['adr'] < 0, 'adr'] = 0
     return df
 
+
+def save_cleaned_data(df: pd.DataFrame):
+    df.to_csv("./hotel_bookings_cleaned.csv", index=False)
+
 '''
 
 Cleaning Pipeline:
    Check column names -> Handle missing values -> Fix column datatypes  -> Fix duplicates -> Business logic checks
-   -> Cast column values to desired values -> Save cleaned data to new CSV file
+   Save cleaned data to new CSV file
 
 '''
 def main():
@@ -340,6 +344,8 @@ def main():
          else:
              print(f"Business logic checks failed for columns: {business_check[1]}")
              hotel_bookings = handle_business_logic_issues(hotel_bookings)
+
+    save_cleaned_data(hotel_bookings)
 
 if __name__ == "__main__":
     main()
