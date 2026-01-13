@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 import iso3166
+import sys
 
-FILE_PATH = "./hotel_bookings.csv"
 
 def check_valid_column_names(names: list):
     for name in names:
@@ -284,8 +284,8 @@ Cleaning Pipeline:
 
 '''
 def main():
-    
-    hotel_bookings = pd.read_csv(FILE_PATH)
+
+    hotel_bookings = "./hotel_bookings.csv"
 
     print(f'The column has {hotel_bookings.shape[0]} rows')
 
