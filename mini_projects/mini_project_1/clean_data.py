@@ -274,7 +274,10 @@ def handle_business_logic_issues(df: pd.DataFrame):
 
 
 def save_cleaned_data(df: pd.DataFrame):
+    # to csv
     df.to_csv("./hotel_bookings_cleaned.csv", index=False)
+
+    # to postgresql
 
 '''
 
@@ -285,7 +288,8 @@ Cleaning Pipeline:
 '''
 def main():
 
-    hotel_bookings = "./hotel_bookings.csv"
+    file_path = "./hotel_bookings.csv"
+    hotel_bookings = pd.read_csv(file_path)
 
     print(f'The column has {hotel_bookings.shape[0]} rows')
 
