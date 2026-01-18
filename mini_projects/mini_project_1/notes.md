@@ -10,7 +10,7 @@ COPY hotel_bookings.csv .
 COPY clean_data.py .
 CMD [ "python", "clean_data.py" ]
 
-FROM pulls python from the docker repository. Slim is chosen because it is light weight but still has enough to support the dependancies needed eg: Pandas.
+FROM pulls python from the docker hub. Slim is chosen because it is light weight but still has enough to support the dependancies needed eg: Pandas.
 WORKDIR -> cd's into the container directory creating it first if it does not exist.
 COPY -> This is used to copy files from local machine to container.
 
@@ -36,3 +36,31 @@ docker run --rm -it -v $(pwd):/app hotel-bookings-cleaner:1.0
 Note: the --rm flag removes the container once the run is complete.
 -it runs the container in interactive mode so that it can accept command line user inputs
 -v: used to mount in our case $(pwd) the current directory to the output directory of the container (/app) 
+
+
+
+# Docker compose
+Docker compose automates what was done above. Also, we need to have a postgres instance so ensuring they are in the same network is 
+also important for us.
+
+The 'way' to start up docker compose is usually docker compose up, the only issue here is we are expecting user input so, instead of
+starting it as we would do a server we should use: docker compose run 
+
+Before this we need to docker compose build to build the image because run expects a container name ie:
+docker compose run --rm cleaner 
+
+Note. When running compose we can start individual services as we need in this case using the service name what I mean is:
+
+services:
+  cleaner:             # This is just a name you give the service
+    build: .           # <--- THIS replaces 'docker build .'
+    image: hotel-bookings-cleaner:2.0-compose  # Optional: names the image
+    volumes:
+      - .:/app         # Replaces '-v $(pwd):/app'
+    stdin_open: true   # Replaces '-i' (Interactive)
+    tty: true          # Replaces '-t' (Terminal)
+
+
+In this case we would not use the image name rather, docker compose run --rm cleaner
+
+
