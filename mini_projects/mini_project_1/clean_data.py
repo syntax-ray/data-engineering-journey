@@ -1,7 +1,9 @@
 import pandas as pd
 import os
 import iso3166
-import sys
+import psycopg2
+from sqlalchemy import create_engine
+from dotenv import load_dotenv
 
 
 def check_valid_column_names(names: list):
@@ -278,6 +280,33 @@ def save_cleaned_data(df: pd.DataFrame):
     df.to_csv("./hotel_bookings_cleaned.csv", index=False)
 
     # to postgresql
+
+    # this script can either connect to postgres from inside the service network or from ouside this handles that.
+    full_curr_path = os.getcwd()
+    split_path = full_curr_path.split("/")
+    curr_dir_name = split_path[-1]
+
+    load_dotenv()
+
+    database = os.getenv("DATABASE")
+    user = os.getenv("DB_USER")
+    password = os.getenv("PASSWORD")
+    if curr_dir_name == "app":
+        host_name = os.getenv("DOCKER_HOST_NAME")
+        port = os.getenv("DOCKER_PORT")
+    else:
+        host_name = os.getenv("LOCAL_HOST_NAME")
+        port = os.getenv("LOCAL_PORT")
+
+    conn_str = f'postgresql://{user}:{password}@{host_name}:{port}/{database}'
+    print(f'The connection string to be used is shown below')
+    print(conn_str)
+    engine = create_engine(f'postgresql://{user}:{password}@{host_name}:{port}/{database}') 
+
+    df.to_sql('hotel_bookings', engine, if_exists='replace', index=False)
+
+    print("Saving complete")
+
 
 '''
 

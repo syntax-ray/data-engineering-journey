@@ -64,3 +64,8 @@ services:
 In this case we would not use the image name rather, docker compose run --rm cleaner
 
 
+# Python
+The binary version of psycopg2 is used. This is not recommended for production environments. This is because of update purposes,
+you can end up being stuck with a security vulnerability. Our app is low stakes I don't care.
+
+

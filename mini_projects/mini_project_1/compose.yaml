@@ -6,6 +6,8 @@ services:
       - .:/app         # Replaces '-v $(pwd):/app'
     stdin_open: true   # Replaces '-i' (Interactive)
     tty: true          # Replaces '-t' (Terminal)
+    depends_on:
+      - postgres_db
 
   postgres_db:
    image: postgres:18
