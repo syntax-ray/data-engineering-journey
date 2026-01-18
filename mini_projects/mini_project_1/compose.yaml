@@ -6,3 +6,14 @@ services:
       - .:/app         # Replaces '-v $(pwd):/app'
     stdin_open: true   # Replaces '-i' (Interactive)
     tty: true          # Replaces '-t' (Terminal)
+
+  postgres_db:
+   image: postgres:18
+   restart: always
+   shm_size: 128mb
+   volumes:
+      - ./db-data/:/var/lib/postgresql/
+   ports:
+      - "5462:5432" 
+   environment:
+     POSTGRES_PASSWORD: use_env_in_practise_;)
