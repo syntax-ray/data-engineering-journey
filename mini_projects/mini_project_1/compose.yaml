@@ -1,7 +1,7 @@
 services:
   cleaner:             # This is just a name you give the service
     build: .           # <--- THIS replaces 'docker build .'
-    image: hotel-bookings-cleaner:2.0-compose  # Optional: names the image
+    image: hotel-bookings-cleaner:3.0-k8s  # Optional: names the image
     volumes:
       - .:/app         # Replaces '-v $(pwd):/app'
     stdin_open: true   # Replaces '-i' (Interactive)

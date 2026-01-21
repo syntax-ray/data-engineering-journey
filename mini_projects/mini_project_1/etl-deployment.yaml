@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etl-manager
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: etl
+  template:
+    metadata:
+      labels:
+        app: etl
+    spec:
+      containers:
+      - name: etl-container
+        image: hotel-bookings-cleaner:3.0-k8s
+        command: ["/bin/sh", "-c"]
+        args: ["echo yes | python /app/clean_data.py && sleep 3600"]
+        imagePullPolicy: Never 
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: etl-config  
+              key: database_host
+        - name: DB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: etl-config  
+              key: database_db
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: etl-config
+              key: database_user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: etl-secrets    
+              key: database_password
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: etl-config
+              key: database_db_port

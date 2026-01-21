@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etl-config  
+data:
+  database_host: "postgres-db"
+  log_level: "DEBUG"
+  database_user: "postgres"
+  database_db: "postgres"
+  database_db_port: "5432"

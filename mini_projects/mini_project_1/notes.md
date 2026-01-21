@@ -68,4 +68,75 @@ In this case we would not use the image name rather, docker compose run --rm cle
 The binary version of psycopg2 is used. This is not recommended for production environments. This is because of update purposes,
 you can end up being stuck with a security vulnerability. Our app is low stakes I don't care.
 
+# Kubernetes (k8s)
+Kubernetes is used in deployment and management of containers. 
+
+Kubernetes heirarchy (top down):
+- Cluster
+- Node
+- Pod
+- Container
+
+The command to start a minikube cluster is: 
+minikube start --driver=podman --container-runtime=containerd
+
+By default this command creates a cluster named minikube. You can change this using: minikube start -p my-second-cluster\
+
+--driver=podman is a Fedora thing. containerd is stable and prevents the api server crashing otherwise.
+
+
+The default take down is delete service if it is exposed, delete deployement then stop the cluster.
+If you need to restart the cluster use the command: minikube start -p <profile-name>
+
+
+Kubernetes is replaces Docker Compose. Well, not replace but the use cases are different. Docker compose is used for single machine
+whereas Kubernetes is to be used on top of a fleet of computers.
+
+Kubernetes knows nothing about custom images. Kubernetes has images but those are completely different to docker images.
+We can export image from docker and import it into kubernetes using the following command: docker save hotel-bookings-cleaner:2.0-compose | minikube image load -
+
+We can list images on kubernetes using the commmand: minikube image ls
+
+Kubernetes uses confige maps and secrets to store configs. The only difference is secrets are used to store confidential pieces of data.
+
+We use yaml files to eliminate the need for use of the command line.
+
+Once you are done writing the deployment, config map and secrets you can apply them individually in order as follows:
+
+1. Configuration & Secrets
+kubectl apply -f 02-db-secret.yaml
+kubectl apply -f 03-etl-config.yaml
+
+2. Networking
+kubectl apply -f 01-db-service.yaml
+
+3. Workloads (Database first, then App)
+kubectl apply -f 04-postgres-deployment.yaml
+kubectl apply -f 05-etl-deployment.yaml
+
+or all together using:
+kubectl apply -f directory-name
+
+
+kubectl is used to interact with KUbernetes cluster via the command line. 
+Sample commands include:
+  - kubectl get deployments
+  - kubectl get services
+  - kubectl logs deployment-name
+  - kubectl get pods
+
+Use case example. A pod is crashing to get the logs you would run 
+  - run kubectl get pods. 
+  - copy pod name
+  - run kubectl logs copied pod name
+
+
+
+You can copy over data from pods to your local machine as follows:
+kubectl cp etl-manager-xx-xxxxx:/app/hotel_bookings_duplicates.csv ./my_duplicates.csv
+
+You can list items as follows:
+kubectl exec etl-manager-xx-xxxxx -- ls -l /app
+
+
 

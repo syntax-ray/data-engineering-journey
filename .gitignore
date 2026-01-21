@@ -4,3 +4,4 @@ venv/
 *.json
 db-data
 .env
+secrets.yaml

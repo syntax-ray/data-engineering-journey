@@ -88,3 +88,8 @@ You will create a Python ETL script, containerize it, load data into Postgres, a
   * Pod starts successfully
   * ETL script runs inside the Pod
   * Data is inserted into PostgreSQL
+
+---
+
+# Project demo link:
+
