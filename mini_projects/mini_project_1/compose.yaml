@@ -1,11 +1,11 @@
 services:
-  cleaner:             # This is just a name you give the service
-    build: .           # <--- THIS replaces 'docker build .'
-    image: hotel-bookings-cleaner:3.0-k8s  # Optional: names the image
+  cleaner:            
+    build: .           
+    image: hotel-bookings-cleaner:3.0-k8s  
     volumes:
-      - .:/app         # Replaces '-v $(pwd):/app'
-    stdin_open: true   # Replaces '-i' (Interactive)
-    tty: true          # Replaces '-t' (Terminal)
+      - .:/app        
+    stdin_open: true   
+    tty: true          
     depends_on:
       - postgres_db
 
